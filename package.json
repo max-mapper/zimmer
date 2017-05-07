@@ -1,6 +1,6 @@
 {
   "name": "zimmer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "streaming parser for the ZIM aka OpenZIM file format http://www.openzim.org/wiki/ZIM_file_format",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,12 @@
   "devDependencies": {
     "tape": "^2.14.0"
   },
-  "keywords": ["xz", "lzma2", "kiwix", "wikipedia"],
+  "keywords": [
+    "xz",
+    "lzma2",
+    "kiwix",
+    "wikipedia"
+  ],
   "author": "max ogden",
   "license": "ISC"
 }
