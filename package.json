@@ -29,5 +29,13 @@
     "wikipedia"
   ],
   "author": "max ogden",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxogden/zimmer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxogden/zimmer/issues"
+  },
+  "homepage": "https://github.com/maxogden/zimmer#readme"
 }
