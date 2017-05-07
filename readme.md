@@ -20,6 +20,22 @@ zimmer.readDirectoryEntry(filename, fd, header, {index: 1}, function (err, entry
 zimmer.readCluster(filename, fd, header, {index: entry.cluster}, function (err, cluster) { })
 ```
 
+### command line cli
+
+```
+$ npm install zimmer -g
+
+$ zimmer
+zimmer zim parser - usage
+
+   zimmer <filename>               - streams all entry metadata + data to stdout'
+   zimmer header <num> <filename>  - reads zim header
+   zimmer entries <filename>       - streams all entry metadata to stdout
+   zimmer entry <num> <filename>   - reads specific entry data by index
+   zimmer clusters <filename>      - streams all cluster metadata to stdout
+   zimmer cluster <num> <filename> - reads specific cluster data by index
+```
+
 ## examples
 
 read a single entry's data by index:
