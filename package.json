@@ -1,6 +1,6 @@
 {
   "name": "zimmer",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "streaming parser for the ZIM aka OpenZIM file format http://www.openzim.org/wiki/ZIM_file_format",
   "main": "index.js",
   "scripts": {
