@@ -29,6 +29,7 @@ $ zimmer
 zimmer zim parser - usage
 
    zimmer <filename>               - streams all entry metadata + data to stdout'
+   zimmer extract <filename> <out> - extracts and writes files to output dir
    zimmer header <num> <filename>  - reads zim header
    zimmer entries <filename>       - streams all entry metadata to stdout
    zimmer entry <num> <filename>   - reads specific entry data by index

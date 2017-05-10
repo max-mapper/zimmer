@@ -2,10 +2,12 @@
 
 var zim = require('./')
 var fs = require('fs')
+var path = require('path')
 var ndjson = require('ndjson')
 var through = require('through2')
 var pump = require('pump')
 var minimist = require('minimist')
+var mkdirp = require('mkdirp')
 
 var args = minimist(process.argv.slice(2))
 var cmd = args._[0]
@@ -17,11 +19,16 @@ if (!filename || args._.length === 1) {
   filename = cmd
   cmd = 'stream'
 }
+
+if (cmd === 'extract') {
+  filename = args._[1]
+}
   
 function usage () {
    console.log(`zimmer zim parser - usage
 
    zimmer <filename>               - streams all entry metadata + data to stdout'
+   zimmer extract <filename> <out> - extracts and writes files to output dir
    zimmer header <num> <filename>  - reads zim header
    zimmer entries <filename>       - streams all entry metadata to stdout
    zimmer entry <num> <filename>   - reads specific entry data by index
@@ -83,6 +90,43 @@ fs.open(filename, 'r', function (err, file) {
           console.log(JSON.stringify(entry))
         })
       })
+      return
+    }
+    
+    if (cmd === 'extract') {
+      var out = args._[2] || process.cwd()
+      mkdirp(out, function (err) {
+        if (err) throw err
+        extract()
+      })
+      
+      function extract () {
+        var pointers = zim.createEntryPointerStream(filename, header)
+        var writer = through.obj(function(entry, enc, cb) {
+          zim.readDirectoryEntry(filename, file, header, entry, function (err, entry) {
+            if (err) return cb(err)
+            if (!entry.cluster) return cb()
+            zim.readCluster(filename, file, header, {index: entry.cluster}, function (err, cluster) {
+              if (err) return cb(err)
+              var contents = cluster.blobs[entry.blob].toString()
+              var saveAs = path.join(out, entry.url)
+              var saveDir = path.dirname(saveAs)
+              mkdirp(saveDir, function (err) {
+                if (err) return cb(err)
+                fs.writeFile(saveAs, contents, function (err) {
+                  if (err) return cb(err)
+                  cb(null, {finished: true, path: saveAs})
+                })
+              })
+            })
+          })
+        })
+    
+        pump(pointers, writer, ndjson.serialize(), process.stdout, function (err) {
+          if (err) throw err
+        })
+      }
+
       return
     }
     
